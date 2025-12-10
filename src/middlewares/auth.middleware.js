@@ -27,13 +27,7 @@ const authentication = async (req, res, next) => {
       });
     }
 
-    const payload = {
-      userId: decoded.id,
-      email: decoded.email,
-      role: decoded.role,
-    };
-
-    req.user = payload;
+    req.user = decoded.user;
 
     next();
   } catch (error) {
@@ -46,7 +40,7 @@ const authentication = async (req, res, next) => {
 const authorization = (...allowedRoles) => {
   return async (req, res, next) => {
     try {
-      const userRole = req?.user?.role;
+      const userRole = req?.user.role;
 
       if (!userRole) {
         return res.status(403).json({
